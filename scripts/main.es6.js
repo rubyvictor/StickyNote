@@ -23,13 +23,10 @@ class StickyNotesApp {
     this.notesSectionTitle = document.getElementById("notes-section-title");
 
     // Saves notes on button click.
-    this.addNoteButton.addEventListener("click", this.saveNote.bind(this));
+    this.addNoteButton.addEventListener("click", () => this.saveNote());
 
     // Toggle for the button.
-    this.noteMessageInput.addEventListener(
-      "keyup",
-      this.toggleButton.bind(this)
-    );
+    this.noteMessageInput.addEventListener("keyup", () => this.toggleButton());
 
     for (var key in localStorage) {
       this.displayNote(key, localStorage[key]);
@@ -83,9 +80,7 @@ class StickyNotesApp {
   }
 }
 
-window.addEventListener("load", 
-  () => new StickyNotesApp()
-);
+window.addEventListener("load", () => new StickyNotesApp());
 
 class StickyNote extends HTMLElement {
   createdCallback() {
@@ -98,7 +93,7 @@ class StickyNote extends HTMLElement {
     this.messageElement = this.querySelector(".message");
     this.dateElement = this.querySelector(".date");
     this.deleteButton = this.querySelector(".delete");
-    this.deleteButton.addEventListener("click", this.deleteNote.bind(this));
+    this.deleteButton.addEventListener("click", () => this.deleteNote());
   }
 
   attributeChangedCallback(attributeName) {
