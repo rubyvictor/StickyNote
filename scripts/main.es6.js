@@ -31,17 +31,12 @@ class StickyNotesApp {
       this.toggleButton.bind(this)
     );
 
-    // Loads all the notes.
     for (var key in localStorage) {
       this.displayNote(key, localStorage[key]);
     }
 
-    // Listen for updates to notes from other windows.
-    window.addEventListener(
-      "storage",
-      function(e) {
-        this.displayNote(e.key, e.newValue);
-      }.bind(this)
+    window.addEventListener("storage", e =>
+      this.displayNote(e.key, e.newValue)
     );
   }
 
@@ -88,13 +83,51 @@ class StickyNotesApp {
   }
 }
 
-// On load start the app.
-window.addEventListener("load", function() {
-  new StickyNotesApp();
-});
+window.addEventListener("load", 
+  () => new StickyNotesApp()
+);
 
-// A Sticky Note custom element that extends HTMLElement.
-var StickyNote = Object.create(HTMLElement.prototype);
+class StickyNote extends HTMLElement {
+  createdCallback() {
+    StickyNote.CLASSES.forEach(
+      function(klass) {
+        this.classList.add(klass);
+      }.bind(this)
+    );
+    this.innerHTML = StickyNote.TEMPLATE;
+    this.messageElement = this.querySelector(".message");
+    this.dateElement = this.querySelector(".date");
+    this.deleteButton = this.querySelector(".delete");
+    this.deleteButton.addEventListener("click", this.deleteNote.bind(this));
+  }
+
+  attributeChangedCallback(attributeName) {
+    if (attributeName == "id") {
+      if (this.id) {
+        var date = new Date(parseInt(this.id));
+      } else {
+        var date = new Date();
+      }
+      var month = StickyNote.MONTHS[date.getMonth()];
+      this.dateElement.textContent =
+        "Created on " + month + " " + date.getDate();
+    }
+  }
+
+  setMessage(message) {
+    this.messageElement.textContent = message;
+    // Replace all line breaks by <br>.
+    this.messageElement.innerHTML = this.messageElement.innerHTML.replace(
+      /\n/g,
+      "<br>"
+    );
+  }
+
+  deleteNote() {
+    localStorage.removeItem(this.id);
+    this.parentNode.removeChild(this);
+  }
+}
 
 // Initial content of the element.
 StickyNote.TEMPLATE =
@@ -132,50 +165,4 @@ StickyNote.MONTHS = [
   "Dec"
 ];
 
-// Fires when an instance of the element is created.
-StickyNote.createdCallback = function() {
-  StickyNote.CLASSES.forEach(
-    function(klass) {
-      this.classList.add(klass);
-    }.bind(this)
-  );
-  this.innerHTML = StickyNote.TEMPLATE;
-  this.messageElement = this.querySelector(".message");
-  this.dateElement = this.querySelector(".date");
-  this.deleteButton = this.querySelector(".delete");
-  this.deleteButton.addEventListener("click", this.deleteNote.bind(this));
-};
-
-// Fires when an attribute of the element is added/deleted/modified.
-StickyNote.attributeChangedCallback = function(attributeName) {
-  // We display/update the created date message if the id changes.
-  if (attributeName == "id") {
-    if (this.id) {
-      var date = new Date(parseInt(this.id));
-    } else {
-      var date = new Date();
-    }
-    var month = StickyNote.MONTHS[date.getMonth()];
-    this.dateElement.textContent = "Created on " + month + " " + date.getDate();
-  }
-};
-
-// Sets the message of the note.
-StickyNote.setMessage = function(message) {
-  this.messageElement.textContent = message;
-  // Replace all line breaks by <br>.
-  this.messageElement.innerHTML = this.messageElement.innerHTML.replace(
-    /\n/g,
-    "<br>"
-  );
-};
-
-// Deletes the note by removing the element from the DOM and the data from localStorage.
-StickyNote.deleteNote = function() {
-  localStorage.removeItem(this.id);
-  this.parentNode.removeChild(this);
-};
-
-document.registerElement("sticky-note", {
-  prototype: StickyNote
-});
+document.registerElement("sticky-note", StickyNote);
