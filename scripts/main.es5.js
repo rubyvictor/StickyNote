@@ -18,13 +18,9 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var StickyNote = require("./StickyNote.js");
 
 var StickyNotesApp = function () {
   function StickyNotesApp() {
@@ -77,9 +73,9 @@ var StickyNotesApp = function () {
       }
 
       if (!message) {
-        return note.deleteNote();
+        return this.note.deleteNote();
       }
-      note.setMessage(message);
+      this.note.setMessage(message);
     }
   }, {
     key: "toggleButton",
@@ -106,75 +102,6 @@ window.addEventListener("load", function () {
   return new StickyNotesApp();
 });
 
-var StickyNote = function (_HTMLElement) {
-  _inherits(StickyNote, _HTMLElement);
-
-  function StickyNote() {
-    _classCallCheck(this, StickyNote);
-
-    return _possibleConstructorReturn(this, (StickyNote.__proto__ || Object.getPrototypeOf(StickyNote)).apply(this, arguments));
-  }
-
-  _createClass(StickyNote, [{
-    key: "createdCallback",
-    value: function createdCallback() {
-      var _classList,
-          _this3 = this;
-
-      (_classList = this.classList).add.apply(_classList, _toConsumableArray(StickyNote.CLASSES));
-      this.innerHTML = StickyNote.TEMPLATE;
-      this.messageElement = this.querySelector(".message");
-      this.dateElement = this.querySelector(".date");
-      this.deleteButton = this.querySelector(".delete");
-      this.deleteButton.addEventListener("click", function () {
-        return _this3.deleteNote();
-      });
-    }
-  }, {
-    key: "attributeChangedCallback",
-    value: function attributeChangedCallback(attributeName) {
-      if (attributeName == "id") {
-        var date = void 0;
-        if (this.id) {
-          date = new Date(parseInt(this.id));
-        } else {
-          date = new Date();
-        }
-
-        var dateFormatterOptions = { day: "numeric", month: "short" };
-        var shortDate = new Intl.DateTimeFormat("en-US", dateFormatterOptions).format(date);
-        this.dateElement.textContent = "Created on " + shortDate;
-      }
-    }
-  }, {
-    key: "setMessage",
-    value: function setMessage(message) {
-      this.messageElement.textContent = message;
-      // Replace all line breaks by <br>.
-      this.messageElement.innerHTML = this.messageElement.innerHTML.replace(/\n/g, "<br>");
-    }
-  }, {
-    key: "deleteNote",
-    value: function deleteNote() {
-      localStorage.removeItem(this.id);
-      this.parentNode.removeChild(this);
-    }
-  }]);
-
-  return StickyNote;
-}(HTMLElement);
-
-// Initial content of the element.
-
-
-StickyNote.TEMPLATE = "<div class=\"message\"></div>\n  <div class=\"date\"></div>\n  <button class=\"delete mdl-button mdl-js-button mdl-js-ripple-effect\">\n  Delete\n  </button>";
-
-// StickyNote elements top level style classes.
-StickyNote.CLASSES = ["mdl-cell--4-col-desktop", "mdl-card__supporting-text", "mdl-cell--12-col", "mdl-shadow--2dp", "mdl-cell--4-col-tablet", "mdl-card", "mdl-cell", "sticky-note"];
-
-// List of shortened month names.
-StickyNote.MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-
-document.registerElement("sticky-note", StickyNote);
+module.exports = StickyNotesApp;
 
 //# sourceMappingURL=main.es5.js.map
