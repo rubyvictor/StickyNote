@@ -124,12 +124,11 @@ class StickyNote extends HTMLElement {
 }
 
 // Initial content of the element.
-StickyNote.TEMPLATE =
-  '<div class="message"></div>' +
-  '<div class="date"></div>' +
-  '<button class="delete mdl-button mdl-js-button mdl-js-ripple-effect">' +
-  "Delete" +
-  "</button>";
+StickyNote.TEMPLATE = `<div class="message"></div>
+  <div class="date"></div>
+  <button class="delete mdl-button mdl-js-button mdl-js-ripple-effect">
+  Delete
+  </button>`;
 
 // StickyNote elements top level style classes.
 StickyNote.CLASSES = [
