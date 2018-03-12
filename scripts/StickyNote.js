@@ -1,4 +1,4 @@
-const StickyNotesApp = require("./main.es6.js");
+import { StickyNoteApp } from "StickyNoteApp";
 
 class StickyNote extends HTMLElement {
   createdCallback() {

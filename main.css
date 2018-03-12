@@ -71,9 +71,9 @@ html, body {
   margin-top: 20px;
 }
 .mdl-card__supporting-text {
-  background: linear-gradient(white, #f9f9f9);
+  background: linear-gradient(white, yellowgreen);
 }
 .sticky-note {
-  background: linear-gradient(#FFF93A, #FFFC9E);
+  background: linear-gradient(greenyellow, #FFFC9E);
   min-height:250px;
 }

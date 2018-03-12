@@ -15,7 +15,7 @@
  */
 "use Strict";
 
-const StickyNote = require("./StickyNote.js");
+import { StickyNote } from "./StickyNote.js";
 
 class StickyNotesApp {
   constructor() {
@@ -66,9 +66,9 @@ class StickyNotesApp {
     }
 
     if (!message) {
-      return this.note.deleteNote();
+      return this.note.StickyNote.deleteNote();
     }
-    this.note.setMessage(message);
+    this.note.StickyNote.setMessage(message);
   }
 
   toggleButton() {
