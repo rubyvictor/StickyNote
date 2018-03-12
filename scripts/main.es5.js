@@ -16,92 +16,13 @@
  */
 "use Strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _StickyNote = require("./StickyNote.js");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var StickyNotesApp = function () {
-  function StickyNotesApp() {
-    var _this = this;
-
-    _classCallCheck(this, StickyNotesApp);
-
-    this.notesContainer = document.getElementById("notes-container");
-    this.noteMessageInput = document.getElementById("message");
-    this.addNoteButton = document.getElementById("save");
-    this.notesSectionTitle = document.getElementById("notes-section-title");
-
-    this.addNoteButton.addEventListener("click", function () {
-      return _this.saveNote();
-    });
-
-    this.noteMessageInput.addEventListener("keyup", function () {
-      return _this.toggleButton();
-    });
-
-    for (var key in localStorage) {
-      this.displayNote(key, localStorage[key]);
-    }
-
-    window.addEventListener("storage", function (e) {
-      return _this.displayNote(e.key, e.newValue);
-    });
-  }
-
-  _createClass(StickyNotesApp, [{
-    key: "saveNote",
-    value: function saveNote() {
-      if (this.noteMessageInput.value) {
-        var key = Date.now().toString();
-        localStorage.setItem(key, this.noteMessageInput.value);
-        this.displayNote(key, this.noteMessageInput.value);
-        StickyNotesApp.resetMaterialTextfield(this.noteMessageInput);
-        this.toggleButton();
-      }
-    }
-  }, {
-    key: "displayNote",
-    value: function displayNote(key, message) {
-      var note = document.getElementById(key);
-
-      if (!note) {
-        note = document.createElement("sticky-note");
-        note.id = key;
-        this.notesContainer.insertBefore(note, this.notesSectionTitle.nextSibling);
-      }
-
-      if (!message) {
-        return this.note.StickyNote.deleteNote();
-      }
-      this.note.StickyNote.setMessage(message);
-    }
-  }, {
-    key: "toggleButton",
-    value: function toggleButton() {
-      if (this.noteMessageInput.value) {
-        this.addNoteButton.removeAttribute("disabled");
-      } else {
-        this.addNoteButton.setAttribute("disabled", "true");
-      }
-    }
-  }], [{
-    key: "resetMaterialTextfield",
-    value: function resetMaterialTextfield(element) {
-      element.value = "";
-      element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
-      element.blur();
-    }
-  }]);
-
-  return StickyNotesApp;
-}();
+var StickyNotesApp = require("../src/StickyNotesApp");
+var StickyNote = require("../src/StickyNote");
 
 window.addEventListener("load", function () {
   return new StickyNotesApp();
 });
 
-module.exports = StickyNotesApp;
+document.registerElement("sticky-note", StickyNote);
 
 //# sourceMappingURL=main.es5.js.map

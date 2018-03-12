@@ -1,5 +1,3 @@
-import { StickyNoteApp } from "StickyNoteApp";
-
 class StickyNote extends HTMLElement {
   createdCallback() {
     this.classList.add(...StickyNote.CLASSES);
@@ -61,6 +59,4 @@ StickyNote.CLASSES = [
   "sticky-note"
 ];
 
-document.registerElement("sticky-note", StickyNote);
-
-module.exports = StickyNote;
+export const StickyNote = StickyNote;
