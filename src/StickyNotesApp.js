@@ -63,4 +63,4 @@ class StickyNotesApp {
   }
 }
 
-export const StickyNotesApp = StickyNotesApp;
+module.exports = StickyNotesApp;
